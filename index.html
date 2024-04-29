@@ -15,8 +15,6 @@
             scene = undefined,
             renderer = undefined,
             light = undefined,
-            mouseX = undefined,
-            mouseY = undefined,
             maze = undefined,
             mazeMesh = undefined,
             mazeDimension = 11,
@@ -297,23 +295,25 @@
 
         function onTouchMove(event) {
             var touch = event.touches[0];
+            mouseX = touch.clientX;
+            mouseY = touch.clientY;
             var windowHalfX = window.innerWidth / 2;
             var windowHalfY = window.innerHeight / 2;
-            keyAxis[0] = (touch.clientX - windowHalfX) / windowHalfX;
-            keyAxis[1] = -(touch.clientY - windowHalfY) / windowHalfY; // Invert the Y direction only for touch controls
+            keyAxis[0] = (mouseX - windowHalfX) / windowHalfX;
+            keyAxis[1] = -(mouseY - windowHalfY) / windowHalfY; // Invert the Y direction only for touch controls
         }
 
+        // Device orientation event handler
         function handleOrientation(event) {
-            var x = event.beta; // In degree in the range [-180,180]
+            var x = event.beta;  // In degree in the range [-180,180]
             var y = event.gamma; // In degree in the range [-90,90]
 
-            // Normalize the values between -1 and 1
-            var normalizedX = (x / 180) * 2 - 1;
-            var normalizedY = (y / 90) * 2 - 1;
+            // Normalize the values to range [-1,1]
+            var normalizedX = x / 90;
+            var normalizedY = y / 90;
 
-            // Set keyAxis for movement
-            keyAxis[0] = normalizedX;
-            keyAxis[1] = normalizedY;
+            keyAxis[0] = normalizedY; // Use gamma (x-axis) for horizontal movement
+            keyAxis[1] = -normalizedX; // Use beta (y-axis) for vertical movement, inverted for intuitive control
         }
 
         jQuery.fn.centerv = function() {
@@ -367,22 +367,8 @@
             // Bind touch events
             document.addEventListener('touchmove', onTouchMove, false);
 
-            // Check for fullscreen API support and enter fullscreen
-            var elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.mozRequestFullScreen) { /* Firefox */
-                elem.mozRequestFullScreen();
-            } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { /* IE/Edge */
-                elem.msRequestFullscreen();
-            }
-
-            // Lock screen orientation to portrait
-            if (window.screen.orientation.lock) {
-                window.screen.orientation.lock('portrait');
-            }
+            // Bind device orientation event
+            window.addEventListener('deviceorientation', handleOrientation);
 
             // Set the initial game state.
             gameState = 'initialize';
