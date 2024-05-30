@@ -103,7 +103,7 @@
         window.addEventListener("orientationchange", function() {
     if (window.orientation === 90 || window.orientation === -90) {
         // If the device is in landscape mode, force it back to portrait
-        alert("Please rotate your device back to portrait mode.");
+        alert("Please rotate your device back to portrait mode or lock your screen orientation.");
         setTimeout(function() {
             window.screen.orientation.lock("portrait-primary");
         }, 0);
