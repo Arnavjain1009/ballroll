@@ -40,26 +40,39 @@
                 const name = prompt("Congratulations! Enter your name:");
                 if (name) {
                     setCookie("playerName", name, 30);
-                    displayPlayerName();
+                    displayPlayerName(name); // Pass the name to display
                 }
             } else {
-                displayPlayerName();
+                displayPlayerName(playerName); // Display the existing name
             }
         }
 
-        function displayPlayerName() {
-            const playerName = getCookie("playerName");
-            if (playerName) {
-                document.getElementById('player-name').innerText = playerName;
-            }
+        function displayPlayerName(name) {
+            document.getElementById('player-name').innerText = name;
         }
-
-        var arrowKeyPressed = false;
 
         function levelComplete() {
+            // Increment level
+            const currentLevelElement = document.getElementById('level');
+            let currentLevel = parseInt(currentLevelElement.innerText.split(' ')[1]);
+            currentLevel++;
+            currentLevelElement.innerText = "Level " + currentLevel;
+
+            // Calculate gems earned
+            const timeTaken = 1; // Placeholder, replace this with actual time taken
+            const gemsEarned = Math.pow(2, currentLevel) / timeTaken;
+
+            // Update gems count
+            const gemsElement = document.getElementById('gems');
+            let currentGems = parseInt(gemsElement.innerText);
+            currentGems += gemsEarned;
+            gemsElement.innerText = currentGems;
+
+            // Update gems in cookie
+            setCookie("gems", currentGems, 30);
+
             // Check if the level is the first level
-            const currentLevel = document.getElementById('level').innerText;
-            if (currentLevel === "Level 1") {
+            if (currentLevel === 1) {
                 promptForName();
             }
         }
@@ -67,7 +80,12 @@
         // Simulate level completion for demonstration purposes
         window.onload = function () {
             setTimeout(levelComplete, 1000); // Simulate completing the level after 1 second
-            displayPlayerName(); // Load player name instantly
+
+            // Load gems count from cookie
+            const gems = getCookie("gems");
+            if (gems) {
+                document.getElementById('gems').innerText = gems;
+            }
         };
 
         function deleteProgress() {
@@ -100,22 +118,24 @@
                 arrowKeyPressed = true;
             }
         }
+
         window.addEventListener("orientationchange", function() {
-    if (window.orientation === 90 || window.orientation === -90) {
-        // If the device is in landscape mode, force it back to portrait
-        alert("Please rotate your device back to portrait mode or lock your screen orientation.");
-        setTimeout(function() {
-            window.screen.orientation.lock("portrait-primary");
-        }, 0);
-    }
-});
+            if (window.orientation === 90 || window.orientation === -90) {
+                // If the device is in landscape mode, force it back to portrait
+                alert("Please rotate your device back to portrait mode or lock your screen orientation.");
+                setTimeout(function() {
+                    window.screen.orientation.lock("portrait-primary");
+                }, 0);
+            }
+        });
 
     </script>
 
     <style>
         @media (orientation: portrait) {
-    /* CSS for portrait orientation */
-}
+            /* CSS for portrait orientation */
+        }
+
         body {
             background: black;
             margin: 0;
@@ -158,7 +178,8 @@
             background-color: transparent;
             border: none;
             cursor: pointer;
-            z-index: 9999; /* Ensure it's above other elements */
+            z-index: 9999;
+            /* Ensure it's above other elements */
         }
     </style>
 
@@ -168,6 +189,7 @@
 
     <div id='level-bar'>
         <span id='level'>Level 1</span>
+        <span id='gems'>0</span> Gems <!-- Display gems count -->
     </div>
 
     <div id='player-name'></div>
