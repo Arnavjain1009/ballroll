@@ -86,8 +86,11 @@
         }
 
         function toggleFullScreenOnClick() {
-            toggleFullScreen();
-            document.getElementById("fullscreen-button").style.display = "none";
+            var ballMoving = false; // Replace this with actual condition to check if the ball is moving
+            if (ballMoving) {
+                toggleFullScreen();
+                document.getElementById("fullscreen-button").style.display = "none";
+            }
         }
 
         function toggleFullScreenOnFirstArrowKey(event) {
