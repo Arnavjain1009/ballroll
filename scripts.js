@@ -13,9 +13,9 @@ var camera = undefined,
             ballMesh = undefined,
             ballRadius = 0.25,
             keyAxis = [0, 0],
-            ironTexture = THREE.ImageUtils.loadTexture('ball.png'),
-            planeTexture = THREE.ImageUtils.loadTexture('concrete.png'),
-            brickTexture = THREE.ImageUtils.loadTexture('brick.png'),
+            ironTexture = THREE.ImageUtils.loadTexture('https://raw.githubusercontent.com/Arnavjain1009/ballroll/main/ball.png'),
+            planeTexture = THREE.ImageUtils.loadTexture('https://raw.githubusercontent.com/Arnavjain1009/ballroll/main/concrete.png'),
+            brickTexture = THREE.ImageUtils.loadTexture('https://raw.githubusercontent.com/Arnavjain1009/ballroll/main/ball.png'),
             gameState = undefined,
             levelProgress = 0,
             saveProgress = true; // Added variable to control progress saving
@@ -294,14 +294,14 @@ var camera = undefined,
             keyAxis[1] = -(mouseY - windowHalfY) / windowHalfY; // Invert the Y direction only for touch controls
         }
 
-        // Device orientation event handler
+         // Device orientation event handler
         function handleOrientation(event) {
             var x = event.beta;  // In degree in the range [-180,180]
             var y = event.gamma; // In degree in the range [-90,90]
 
             // Normalize the values to range [-1,1]
-            var normalizedX = x / 90;
-            var normalizedY = y / 90;
+            var normalizedX = x / 50;
+            var normalizedY = y / 50;
 
             keyAxis[0] = normalizedY; // Use gamma (x-axis) for horizontal movement
             keyAxis[1] = -normalizedX; // Use beta (y-axis) for vertical movement, inverted for intuitive control
