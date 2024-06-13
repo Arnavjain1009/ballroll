@@ -11,14 +11,9 @@
     <script src="scripts.js"></script>
 
     <script>
-        var totalGems = 0; // Total gems earned across all levels
-        var totalSeconds = 0; // Total seconds the ball has moved
-        var levelsCompleted = 0; // Number of levels completed
-        var levelSeconds = {}; // Stores the time taken to beat each level
-
         function setCookie(name, value, days) {
             const d = new Date();
-            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 100000000000000000));
             const expires = "expires=" + d.toUTCString();
             document.cookie = name + "=" + value + ";" + expires + ";path=/";
         }
@@ -62,49 +57,15 @@
         var arrowKeyPressed = false;
 
         function levelComplete() {
-            const currentLevel = document.getElementById('level').innerText;
-            const levelTime = 5; // Change this to the actual time taken to complete the level in seconds
-
-            // Calculate gems earned for the current level
-            const gemsEarned = Math.pow(2, parseInt(currentLevel.split(' ')[1])) / levelTime;
-
-            // Update total gems and display
-            totalGems += gemsEarned;
-            document.getElementById('total-gems').innerText = "Total Gems: " + totalGems.toFixed(2);
-
-            // Update total seconds
-            totalSeconds += levelSeconds[currentLevel] || 0;
-
-            // Increment levels completed
-            levelsCompleted++;
-
-            // Save data in cookies
-            setCookie("totalGems", totalGems, 30);
-            setCookie("totalSeconds", totalSeconds, 30);
-            setCookie("levelsCompleted", levelsCompleted, 30);
-
-            // Calculate average seconds per level
-            const averageSecondsPerLevel = totalSeconds / levelsCompleted;
-            setCookie("averageSecondsPerLevel", averageSecondsPerLevel.toFixed(2), 30);
-
             // Check if the level is the first level
+            const currentLevel = document.getElementById('level').innerText;
             if (currentLevel === "Level 1") {
                 promptForName();
             }
         }
 
-        // Load data from cookies
+        // Simulate level completion for demonstration purposes
         window.onload = function () {
-            totalGems = parseFloat(getCookie("totalGems")) || 0;
-            totalSeconds = parseFloat(getCookie("totalSeconds")) || 0;
-            levelsCompleted = parseInt(getCookie("levelsCompleted")) || 0;
-
-            // Calculate average seconds per level
-            const averageSecondsPerLevel = levelsCompleted > 0 ? totalSeconds / levelsCompleted : 0;
-
-            document.getElementById('total-gems').innerText = "Total Gems: " + totalGems.toFixed(2);
-            document.getElementById('average-seconds').innerText = "Average Seconds per Level: " + averageSecondsPerLevel.toFixed(2);
-
             setTimeout(levelComplete, 1000); // Simulate completing the level after 1 second
             displayPlayerName(); // Load player name instantly
         };
@@ -140,22 +101,21 @@
             }
         }
         window.addEventListener("orientationchange", function() {
-            if (window.orientation === 90 || window.orientation === -90) {
-                // If the device is in landscape mode, force it back to portrait
-                alert("Please rotate your device back to portrait mode or lock your screen orientation.");
-                setTimeout(function() {
-                    window.screen.orientation.lock("portrait-primary");
-                }, 0);
-            }
-        });
+    if (window.orientation === 90 || window.orientation === -90) {
+        // If the device is in landscape mode, force it back to portrait
+        alert("Please rotate your device back to portrait mode or lock your screen orientation.");
+        setTimeout(function() {
+            window.screen.orientation.lock("portrait-primary");
+        }, 0);
+    }
+});
 
     </script>
 
     <style>
         @media (orientation: portrait) {
-            /* CSS for portrait orientation */
-        }
-
+    /* CSS for portrait orientation */
+}
         body {
             background: black;
             margin: 0;
@@ -198,25 +158,21 @@
             background-color: transparent;
             border: none;
             cursor: pointer;
-            z-index: 9999;
-            /* Ensure it's above other elements */
+            z-index: 9999; /* Ensure it's above other elements */
         }
     </style>
 
 </head>
 
-<body onkeydown="toggleFullScreenOnFirstArrowKey
-(event)">
+<body onkeydown="toggleFullScreenOnFirstArrowKey(event)">
 
-<div id='level-bar'>
-    <span id='level'>Level 1</span>
-    <div id="total-gems">Total Gems: 0</div> <!-- Display total gems earned -->
-    <div id="average-seconds">Average Seconds per Level: 0</div> <!-- Display average seconds per level -->
-</div>
+    <div id='level-bar'>
+        <span id='level'>Levelyay 1</span>
+    </div>
 
-<div id='player-name'></div>
+    <div id='player-name'></div>
 
-<button id="fullscreen-button" onclick="toggleFullScreenOnClick()"></button>
+    <button id="fullscreen-button" onclick="toggleFullScreenOnClick()"></button>
 
 </body>
 
