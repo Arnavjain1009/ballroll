@@ -10,7 +10,70 @@
     <script src="jquery.js"></script>
     <script src="scripts.js"></script>
 
-    <script>
+    
+
+
+        <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-database.js"></script>
+
+<script>
+    // Your Firebase config from Firebase Console
+    const firebaseConfig = {
+  apiKey: "AIzaSyBP5fSB_kiakv0r-WMo7BkP2Ik70c26tT0",
+  authDomain: "whattschat-f522c.firebaseapp.com",
+  databaseURL: "https://whattschat-f522c-default-rtdb.firebaseio.com",
+  projectId: "whattschat-f522c",
+  storageBucket: "whattschat-f522c.appspot.com",
+  messagingSenderId: "746097682908",
+  appId: "1:746097682908:web:51a0278320ad4af5774719",
+  measurementId: "G-5QLWYM65L1"
+};
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+</script>
+
+<script>
+    // Function to fetch leaderboard data and display ranks
+    function fetchLeaderboard() {
+        const leaderboardRef = database.ref('leaderboard/players').orderByChild('levelsCreated');
+
+        leaderboardRef.once('value', (snapshot) => {
+            const leaderboard = snapshot.val();
+            if (leaderboard) {
+                // Convert leaderboard object into array for sorting
+                const sortedPlayers = Object.keys(leaderboard).map(key => ({
+                    id: key,
+                    name: leaderboard[key].name,
+                    levelsCreated: leaderboard[key].levelsCreated
+                }));
+
+                // Sort players by levelsCreated (descending)
+                sortedPlayers.sort((a, b) => b.levelsCreated - a.levelsCreated);
+
+                // Display leaderboard
+                let rankList = '<h2>Leaderboard</h2>';
+                sortedPlayers.forEach((player, index) => {
+                    rankList += `<div>${index + 1}. ${player.name} - ${player.levelsCreated} levels</div>`;
+                });
+
+                document.getElementById('leaderboard').innerHTML = rankList;
+            }
+        });
+    }
+
+    // Function to update a player's levelsCreated count
+    function updateLevelsCreated(playerId, levelsCreated) {
+        const playerRef = database.ref(`leaderboard/players/${playerId}`);
+        playerRef.update({ levelsCreated });
+    }
+</script>
+
+<script>
+
+    
         function setCookie(name, value, days) {
             const d = new Date();
             d.setTime(d.getTime() + (days * 24 * 60 * 60 * 100000000000000000));
