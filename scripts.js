@@ -294,18 +294,19 @@ var camera = undefined,
             keyAxis[1] = -(mouseY - windowHalfY) / windowHalfY; // Invert the Y direction only for touch controls
         }
 
-         // Device orientation event handler
-        function handleOrientation(event) {
-            var x = event.beta;  // In degree in the range [-180,180]
-            var y = event.gamma; // In degree in the range [-90,90]
+         function handleOrientation(event) {
+    var x = event.beta;  // In degree in the range [-180,180]
+    var y = event.gamma; // In degree in the range [-90,90]
 
-            // Normalize the values to range [-1,1]
-            var normalizedX = x / 50;
-            var normalizedY = y / 50;
+    // Normalize the values to range [-1,1]
+    var normalizedX = x / 50;
+    var normalizedY = y / 50;
 
-            keyAxis[0] = normalizedY; // Use gamma (x-axis) for horizontal movement
-            keyAxis[1] = -normalizedX; // Use beta (y-axis) for vertical movement, inverted for intuitive control
-        }
+    // Make left-right movements twice as fast as up-down movements
+    keyAxis[0] = normalizedY * 2; // Use gamma (x-axis) for horizontal movement, doubled for speed
+    keyAxis[1] = -normalizedX; // Use beta (y-axis) for vertical movement, inverted for intuitive control
+}
+
 
         jQuery.fn.centerv = function() {
             wh = window.innerHeight;
