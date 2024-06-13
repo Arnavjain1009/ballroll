@@ -337,38 +337,41 @@ var camera = undefined,
             location.reload();
         }
 
-        $(document).ready(function() {
+     $(document).ready(function() {
 
-            // Prepare the instructions.
-            $('#instructions').center();
-            $('#instructions').hide();
-            KeyboardJS.bind.key('i', function() { $('#instructions').show() },
-                function() { $('#instructions').hide() });
+    // Prepare the instructions.
+    $('#instructions').center();
+    $('#instructions').hide();
+    KeyboardJS.bind.key('i', function() { $('#instructions').show() },
+        function() { $('#instructions').hide() });
 
-            // Create the renderer.
-            renderer = new THREE.WebGLRenderer();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
+    // Create the renderer.
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-            // Bind keyboard and resize events.
-            KeyboardJS.bind.axis('left', 'right', 'down', 'up', onMoveKey);
-            KeyboardJS.bind.axis('h', 'l', 'j', 'k', onMoveKey);
-            $(window).resize(onResize);
+    // Bind keyboard and resize events.
+    KeyboardJS.bind.axis('left', 'right', 'down', 'up', onMoveKey);
+    KeyboardJS.bind.axis('h', 'l', 'j', 'k', onMoveKey);
+    // Bind WASD keys for movement
+    KeyboardJS.bind.axis('a', 'd', 's', 'w', onMoveKey);
 
-            // Bind touch events
-            document.addEventListener('touchmove', onTouchMove, false);
+    $(window).resize(onResize);
 
-            // Bind device orientation event
-            window.addEventListener('deviceorientation', handleOrientation);
+    // Bind touch events
+    document.addEventListener('touchmove', onTouchMove, false);
 
-            // Set the initial game state.
-            gameState = 'initialize';
+    // Bind device orientation event
+    window.addEventListener('deviceorientation', handleOrientation);
 
-            // Start the game loop.
-            requestAnimationFrame(gameLoop);
+    // Set the initial game state.
+    gameState = 'initialize';
 
-          
-        })
+    // Start the game loop.
+    requestAnimationFrame(gameLoop);
+
+});
+
 
       
 
