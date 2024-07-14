@@ -56,12 +56,21 @@
 
         var arrowKeyPressed = false;
         var gyroActive = true;
+        var levelTimeout;
 
         function levelComplete() {
             // Check if the level is the first level
             const currentLevel = document.getElementById('level').innerText;
             if (currentLevel === "Level 1") {
                 promptForName();
+                clearTimeout(levelTimeout); // Clear the timeout if the level is completed within 30 seconds
+            }
+        }
+
+        function checkLevel1Timeout() {
+            const currentLevel = document.getElementById('level').innerText;
+            if (currentLevel === "Level 1") {
+                alert("The exit is in the top right of the map.");
             }
         }
 
@@ -69,6 +78,7 @@
         window.onload = function () {
             setTimeout(levelComplete, 1000); // Simulate completing the level after 1 second
             displayPlayerName(); // Load player name instantly
+            levelTimeout = setTimeout(checkLevel1Timeout, 30000); // Set timeout for 30 seconds to show the popup
         };
 
         function deleteProgress() {
