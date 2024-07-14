@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -14,7 +13,7 @@
     <script>
         function setCookie(name, value, days) {
             const d = new Date();
-            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 100000000000000000));
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
             const expires = "expires=" + d.toUTCString();
             document.cookie = name + "=" + value + ";" + expires + ";path=/";
         }
@@ -56,6 +55,7 @@
         }
 
         var arrowKeyPressed = false;
+        var gyroActive = true;
 
         function levelComplete() {
             // Check if the level is the first level
@@ -101,22 +101,42 @@
                 arrowKeyPressed = true;
             }
         }
-        window.addEventListener("orientationchange", function() {
-    if (window.orientation === 90 || window.orientation === -90) {
-        // If the device is in landscape mode, force it back to portrait
-        alert("Please rotate your device back to portrait mode or lock your screen orientation.");
-        setTimeout(function() {
-            window.screen.orientation.lock("portrait-primary");
-        }, 0);
-    }
-});
+
+        function handleTouchStart(event) {
+            gyroActive = false;
+        }
+
+        function handleTouchEnd(event) {
+            gyroActive = true;
+        }
+
+        window.addEventListener("orientationchange", function () {
+            if (window.orientation === 90 || window.orientation === -90) {
+                // If the device is in landscape mode, force it back to portrait
+                alert("Please rotate your device back to portrait mode or lock your screen orientation.");
+                setTimeout(function () {
+                    window.screen.orientation.lock("portrait-primary");
+                }, 0);
+            }
+        });
+
+        window.addEventListener("devicemotion", function (event) {
+            if (gyroActive) {
+                // Gyro control logic here
+                console.log("Gyro controls active");
+            }
+        });
+
+        window.addEventListener("touchstart", handleTouchStart, { passive: false });
+        window.addEventListener("touchend", handleTouchEnd, { passive: false });
 
     </script>
 
     <style>
         @media (orientation: portrait) {
-    /* CSS for portrait orientation */
-}
+            /* CSS for portrait orientation */
+        }
+
         body {
             background: black;
             margin: 0;
@@ -168,7 +188,7 @@
 <body onkeydown="toggleFullScreenOnFirstArrowKey(event)">
 
     <div id='level-bar'>
-        <span id='level'>Levelyay 1</span>
+        <span id='level'>Level 1</span>
     </div>
 
     <div id='player-name'></div>
