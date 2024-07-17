@@ -3,8 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <meta name="orientation" content="portrait">
-    
+
     <script src='Box2dWeb.min.js'></script>
     <script src="Three.js"></script>
     <script src="keyboard.js"></script>
@@ -60,10 +59,11 @@
         var levelTimeout;
 
         function levelComplete() {
+            // Check if the level is the first level
             const currentLevel = document.getElementById('level').innerText;
             if (currentLevel === "Level 1") {
                 promptForName();
-                clearTimeout(levelTimeout);
+                clearTimeout(levelTimeout); // Clear the timeout if the level is completed within 30 seconds
             }
         }
 
@@ -74,13 +74,16 @@
             }
         }
 
+        // Simulate level completion for demonstration purposes
         window.onload = function () {
-            setTimeout(levelComplete, 1000);
-            displayPlayerName();
-            levelTimeout = setTimeout(checkLevel1Timeout, 30000);
+            setTimeout(levelComplete, 1000); // Simulate completing the level after 1 second
+            displayPlayerName(); // Load player name instantly
+            levelTimeout = setTimeout(checkLevel1Timeout, 30000); // Set timeout for 30 seconds to show the popup
         };
 
-        function deleteProgress() {}
+        function deleteProgress() {
+            // Delete progress logic here
+        }
 
         function toggleFullScreen() {
             var doc = window.document;
@@ -119,17 +122,17 @@
 
         window.addEventListener("orientationchange", function () {
             if (window.orientation === 90 || window.orientation === -90) {
+                // If the device is in landscape mode, force it back to portrait
                 alert("Please rotate your device back to portrait mode or lock your screen orientation.");
                 setTimeout(function () {
-                    window.screen.orientation.lock("portrait-primary").catch(function(error) {
-                        console.error("Orientation lock failed: ", error);
-                    });
+                    window.screen.orientation.lock("portrait-primary");
                 }, 0);
             }
         });
 
         window.addEventListener("devicemotion", function (event) {
             if (gyroActive) {
+                // Gyro control logic here
                 console.log("Gyro controls active");
             }
         });
@@ -137,9 +140,6 @@
         window.addEventListener("touchstart", handleTouchStart, { passive: false });
         window.addEventListener("touchend", handleTouchEnd, { passive: false });
 
-        window.screen.orientation.lock("portrait-primary").catch(function(error) {
-            console.error("Initial orientation lock failed: ", error);
-        });
     </script>
 
     <style>
@@ -189,7 +189,7 @@
             background-color: transparent;
             border: none;
             cursor: pointer;
-            z-index: 9999;
+            z-index: 9999; /* Ensure it's above other elements */
         }
     </style>
 
